@@ -5,9 +5,24 @@ services:
     image: jenkinsci/blueocean:1.4.2
     volumes:
       - "var_jenkins:/var/jenkins_home/"
+    networks:
+      - jenkins-network
     ports:
       - "8080:8080"
     tty: true
+  agent01:
+    build: ./agent01
+    image: agent01
+    volumes:
+      - type: bind
+        source: ./agent01/ssh
+        target: /root/.ssh
+    networks:
+      - jenkins-network
+    tty: true
+
+networks:
+  jenkins-network:
 
 volumes:
   var_jenkins:
